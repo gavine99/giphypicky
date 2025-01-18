@@ -1,0 +1,112 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 34
+
+    defaultConfig {
+        applicationId "top.bobfox.giphypicky"
+        minSdkVersion 33
+        targetSdkVersion 33
+
+        versionCode 2225
+        versionName '1.0.0'
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        versionNameSuffix '-alpha'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    namespace 'top.bobfox.giphypicky'
+
+    buildTypes {
+        release {
+            zipAlignEnabled true
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+        }
+    }
+
+    testOptions {
+
+        unitTests {
+            includeAndroidResources = true
+
+            all {
+                jacoco {
+                    includeNoLocationClasses = true
+                }
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+project.afterEvaluate {
+
+    android.applicationVariants.all { variant ->
+        def name = variant.name
+        def testTaskName = "test${name.capitalize()}UnitTest"
+
+        createJacocoReportTask(testTaskName, name)
+    }
+}
+
+private void createJacocoReportTask(testTaskName, name) {
+    tasks.register("${testTaskName}Coverage", JacocoReport) { task ->
+        task.dependsOn tasks.named("$testTaskName")
+        task.group = "Reporting"
+        task.description = "Generate Jacoco coverage reports for the ${name.capitalize()} build."
+
+        def excludes = ['**/R.class',
+                        '**/R$*.class',
+                        'android/**/*.class',
+                        '**/*$ViewInjector*.*',
+                        '**/*$ViewBinder*.*',
+                        '**/BuildConfig.*',
+                        '**/*$Lambda$*.*',
+                        '**/*Dagger*.*',
+                        '**/*Test*.*',
+                        'android/**/*.*',
+                        '**/*$*$*.*',
+                        '**/Manifest*.*']
+        def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${name}", excludes: excludes)
+        def javaClasses = fileTree(dir: "${project.buildDir}/intermediates/javac/${name}", excludes: excludes)
+        task.classDirectories = files([kotlinClasses, javaClasses])
+
+        task.sourceDirectories = files(["${project.projectDir}/src/main/java"] + android.sourceSets[name].java.srcDirs)
+        task.executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
+
+        task.reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.constraintlayout:constraintlayout:$androidx_constraintlayout_version"
+
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    implementation 'com.giphy.sdk:ui:2.3.16'
+}

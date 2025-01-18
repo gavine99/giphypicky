@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Giphy Picky</string>
+    <string name="search_query_hint">Search for a gif...</string>
+    <string name="downloading">downloading</string>
+    <string name="enter_api_key">Enter API key</string>
+    <string name="giphy_apikey_dialog_title">A Giphy API Key is Required</string>
+    <string name="giphy_apikey_dialog_message">\nThis app is useless without a Giphy API key.\n\n
+Go to https://giphy.com/join to create a Giphy account and then create an API key.\n\n
+Enter your key below.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_api_key_hint">Use the key icon to enter your Giphy API key</string>
+</resources>

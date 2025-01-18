@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:visibility="visible">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".ui.MainActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/poweredByGiphy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/powered_by_giphy" />
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:layout_marginLeft="6dp"
+                android:focusable="auto"
+                android:focusableInTouchMode="true"
+                android:focusedByDefault="true"
+                android:hint="@string/search_query_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:lines="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/enterApiKey"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="6dp"
+                android:clickable="true"
+                android:contentDescription="@string/enter_api_key"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_key_image" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.giphy.sdk.ui.views.GiphyGridView
+            android:id="@+id/gifsGridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:gphCellPadding="6dp"
+            app:gphDirection="vertical"
+            app:gphShowCheckeredBackground="false"
+            app:gphSpanCount="2"></com.giphy.sdk.ui.views.GiphyGridView>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/downloading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#aa000000"
+        android:clickable="true"
+        android:contentDescription="@string/app_name"
+        android:padding="60dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_loading_image"
+        tools:visibility="invisible" />
+
+</FrameLayout>
